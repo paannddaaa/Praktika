@@ -70,7 +70,7 @@ class InceptionBlock2(nn.Module):
         )
         self.branch4 = nn.Sequential(
             torch.linalg.norm(out_5x5, ord=2), ##Как правильно тут чё указать в скобках и главная проблема ещё в дробных числах, укажу где ниже
-            ConvBlock(in_channels, out_pool, stride=1, kernel_size=1, padding=0)
+            ConvBlock(in_channels, out_pool, stride=2, kernel_size=1, padding=0)
         )
 
     def forward(self, x):
