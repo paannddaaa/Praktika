@@ -26,7 +26,6 @@ class NN1(nn.Module):
         self.fc2 = nn.Linear(in_features = 8192, out_features = 4096)
         self.fc7128 = nn.Linear(in_features= 4096, out_features=128)
 
-
     def forward(self, x):
         x = self.conv1(x)
         x = F.relu(self.pool1(x))
