@@ -13,7 +13,6 @@ class ConvBlock(nn.Module):
     def forward(self, x):
         return F.relu(self.bn(self.conv(x)))
 
-
 class InceptionBlock(nn.Module):
     def __init__(
             self,
@@ -48,13 +47,10 @@ class InceptionBlock(nn.Module):
     def forward(self, x):
         return torch.cat([branch(x) for branch in self.branches], 1)
 
-
 class NN2(nn.Module):
     def __init__(self):
         super(NN2, self).__init__()
-        self.conv1 = ConvBlock(
-            in_channels=3, out_chanels=64, stride=2, kernel_size=7,  padding=5,
-        )
+        self.conv1 = ConvBlock(in_channels=3, out_chanels=64, stride=2, kernel_size=7,  padding=5,)
         self.pool1 = nn.MaxPool2d(kernel_size=3, stride=2, padding=1)
         self.inception2 = nn.Sequential(
             ConvBlock(64, 64, stride=1, kernel_size=1,  padding=0),
@@ -73,7 +69,6 @@ class NN2(nn.Module):
         self.inseption5b = InceptionBlock(1024, 384, 192, 384, 48, 128, 128,1)
         self.avgpool1 = nn.AvgPool2d(kernel_size=7, stride=1, padding=0)
         self.fc = nn.Linear(in_features=1024, out_features=128)
-        #self.pool3 = nn.MaxPool2d(kernel_size=3, stride=1, padding=1)
 
     def forward(self, x):
         x = self.conv1(x)
@@ -91,15 +86,12 @@ class NN2(nn.Module):
         x = self.inseption5a(x)
         x = self.inseption5b(x)
         x = F.relu(self.avgpool1(x))
+        x = x.reshape((-1, 1024))
         x = self.fc(x)
-        #x = F.relu(self.pool3(x))
-        x = F.tanh(x)
         print(x.shape)
         return F.tanh(x)
-
 
 Nelenet2 = NN2()
 input_vector = torch.rand((1, 3, 220, 220))
 Nelenet2(input_vector).shape
-#Nelenet2.lin2.weight.shape
-#summary(Nelenet2, input_size=(3, 220, 220), device="cpu")
+summary(Nelenet2, input_size=(3, 220, 220), device="cpu")

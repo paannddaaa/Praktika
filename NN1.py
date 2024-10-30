@@ -51,9 +51,7 @@ class NN1(nn.Module):
         print(x.shape)
         return F.tanh(x)
 
-
 Nelenet = NN1()
 input_vector = torch.rand((1, 3, 220, 220))
 Nelenet(input_vector).shape
-#Nelenet.fc7128.weight.shape
 summary(Nelenet, input_size=( 3, 220, 220), device="cpu")
