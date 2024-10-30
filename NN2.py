@@ -89,7 +89,7 @@ class NN2(nn.Module):
         x = x.reshape((-1, 1024))
         x = self.fc(x)
         print(x.shape)
-        return F.tanh(x)
+        return x
 
 Nelenet2 = NN2()
 input_vector = torch.rand((1, 3, 220, 220))
