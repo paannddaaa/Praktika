@@ -1,5 +1,6 @@
 import os, sys
 import random
+from csv1 import df
 import seaborn as sns
 import torch
 from torch.utils.data import Dataset
@@ -7,26 +8,6 @@ from torchvision.io import read_image
 from PIL import Image
 import pandas as pd
 from torchvision.utils import make_grid
-
-identity_path = r"D:\Celeba\identity_CelebA.txt"
-with open(identity_path) as f:
-    fp_ids = [tuple(x.split(' ')) for x in f.read().split('\n')]
-fp_ids = [(i[0], int(i[1])) for i in fp_ids]
-df = pd.DataFrame(fp_ids, columns=['filepath', 'person_id'])
-df.to_csv('CelebaTriplets.csv')
-len(df['person_id'].unique())
-sns.histplot(df['person_id'])
-low_count_ids = []
-for p in df['person_id'].unique():
-    if len(df[df['person_id']==p])<2:
-        low_count_ids.append(p)
-
-neg_anchor =  df[df['person_id']==2880]['filepath'].sample(1).item()
-anchors = []
-for p in df['person_id'].unique():
-    if p not in low_count_ids:
-        base_anchor, pos_anchor = df[df['person_id']==p]['filepath'].sample(2)
-        neg_anchor = df[df['person_id']!=p]['filepath'].sample(1).item()
 
 class CelebaTripletDataset(Dataset):
     def __init__(self, path2df, path2root, transforms=None):
@@ -61,3 +42,6 @@ dataset = CelebaTripletDataset(r"D:\Celeba\CelebaTriplets.csv",
 
 import matplotlib.pyplot as plt
 plt.imshow(dataset.plot_examples(0))
+
+if __name__ == '__main__':
+        dataset()
